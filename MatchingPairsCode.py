@@ -74,21 +74,21 @@ while running:
         display.flip()
         li_tile=[]
         li_ind=[]
-        ma=[]
+        random_index_list=[]
         for g,tile in enumerate(tiles):
             li_tile.append(tile)
             li_ind.append(g)
-        while(len(ma)!=16):
-            na = random.choice(li_ind)
-            if(na not in ma):
-                row=na//4
-                col=na%4
-                tile1=li_tile[na].image
+        while(len(random_index_list)!=16):
+            random_index = random.choice(li_ind)
+            if( random_index not in random_index_list):
+                row=random_index//4
+                col=random_index%4
+                tile1=li_tile[ random_index].image
                 screen.blit(tile1,(col* IMAGE_SIZE + MARGIN, row * IMAGE_SIZE + MARGIN))
                 display.flip()
                 sleep(0.15)
-                ma.append(na)
-            if(len(ma)==16):
+                random_index_list.append(random_index)
+            if(len(random_index_list)==16):
                 sleep(1)
             
     k+=1
@@ -118,14 +118,10 @@ while running:
     # Display animals
     screen.fill((255, 255, 255))
 
-    total_skipped = 0
-
     for i, tile in enumerate(tiles):
         current_image = tile.image if i in current_images_displayed else tile.box
         if not tile.skip:
             screen.blit(current_image, (tile.col * IMAGE_SIZE + MARGIN, tile.row * IMAGE_SIZE + MARGIN))
-        else:
-            total_skipped += 1
     display.flip()
 
     # Check for matches
@@ -142,7 +138,10 @@ while running:
                 mixer.music.play()
                 screen.blit(won, (0, 0))
                 display.flip()
-                sleep(2)               
+                sleep(3)
+                pygame.quit()
+                running = False
+
             else:
                 screen.blit(matched, (0, 0))
                 display.flip()
